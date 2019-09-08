@@ -2,7 +2,12 @@
 ---
 
 A backend baseline<br>
-This project is an ongoing BETA node.js server that can be used as a template.
+A node.js server with a Postgres DB server that can be used as a template.<br><br>
+
+Features:
+* user registration and login
+* Cookies based session management
+
 
 Core components are:
 * node.js
