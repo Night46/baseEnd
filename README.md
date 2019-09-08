@@ -1,8 +1,7 @@
 **baseEnd**
 ---
 
-A backend baseline<br>
-A node.js server with a Postgres DB server that can be used as a template.<br><br>
+A backend baseline based on node.js and Postgres that can be used as a template.<br><br>
 
 Features:
 * user registration and login
