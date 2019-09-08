@@ -1,0 +1,34 @@
+# Setup Postgres DB on Ubuntu server
+
+wget --quiet -O - https://www.postgresql.org/media/keys/ACCC4CF8.asc | sudo apt-key add -
+sudo sh -c 'echo "deb http://apt.postgresql.org/pub/repos/apt/$(lsb_release -sc)-pgdg main" > /etc/apt/sources.list.d/PostgreSQL.list'
+sudo apt update
+sudo apt -y upgrade
+sudo apt -y install postgresql-10
+sudo apt -y install libpq-dev
+sudo -u postgres -i
+createuser -d -s -r baseadmin;
+psql
+alter user pieadmin with password 'basepass';
+\q
+
+
+
+# allow network authenticaiton for remote access
+
+vim /etc/postgresql/10/main/pg_hba.conf
+ > Change the local from peer to md5
+
+
+
+# create database and tables
+
+psql postgres -U baseadmin
+create database base_db;
+grant all privileges on database base_db to baseadmin;
+\connect base_db
+
+create table users ( id UUID NOT NULL, username CHAR(64), email CHAR(64) NOT NULL UNIQUE, password VARCHAR(64), role CHAR(32), created TIMESTAMP WITHOUT TIME ZONE NOT NULL, CONSTRAINT users_pkey PRIMARY KEY(id) ) WITH (oids = false);
+create table sessions ( id UUID NOT NULL, email CHAR(64) NOT NULL, username CHAR(64), role CHAR(32), userid VARCHAR(64), expiration TIMESTAMP WITHOUT TIME ZONE NOT NULL, created TIMESTAMP WITHOUT TIME ZONE NOT NULL);
+
+\q
