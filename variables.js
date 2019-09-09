@@ -8,7 +8,7 @@ const webServer = {
 
 // postgresql server variables
 const DBserver = {
-    DB_HOST: '10.10.102.239',
+    DB_HOST: '192.168.0.58',
     DB_PORT: '5432',
     DB_USER: 'baseadmin',
     DB_PASS: 'basepass',

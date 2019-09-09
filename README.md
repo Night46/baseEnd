@@ -18,7 +18,10 @@ To setup the Postgres server follow the instructions in the 'SetupGuides' folder
 
 
 
-
+TODO
+---
+* input data type verification
+* domain validation for registration - domain exists and has MX record
 
 
 

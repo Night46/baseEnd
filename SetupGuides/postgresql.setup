@@ -1,15 +1,11 @@
 # Setup Postgres DB on Ubuntu server
 
-wget --quiet -O - https://www.postgresql.org/media/keys/ACCC4CF8.asc | sudo apt-key add -
-sudo sh -c 'echo "deb http://apt.postgresql.org/pub/repos/apt/$(lsb_release -sc)-pgdg main" > /etc/apt/sources.list.d/PostgreSQL.list'
-sudo apt update
-sudo apt -y upgrade
-sudo apt -y install postgresql-10
+sudo apt -y install postgresql
 sudo apt -y install libpq-dev
 sudo -u postgres -i
 createuser -d -s -r baseadmin;
 psql
-alter user pieadmin with password 'basepass';
+alter user baseadmin with password 'basepass';
 \q
 
 
