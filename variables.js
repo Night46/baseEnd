@@ -5,7 +5,6 @@ const webServer = {
     MIDDLEWARE_PORT: 4500
 }
 
-
 // postgresql server variables
 const DBserver = {
     DB_HOST: '192.168.0.58',
@@ -14,7 +13,6 @@ const DBserver = {
     DB_PASS: 'basepass',
     DB_NAME: 'base_db'
 }
-
 
 const bcrypt = {
     rounds: 10
@@ -32,7 +30,15 @@ const session = {
     resave: false
 }
 
-module.exports = {webServer, DBserver, bcrypt, cookie, session}
-// module.exports.webServer = webServer
-// module.exports.DBserver = DBserver
-// module.exports.bcrypt = bcrypt
+const email = {
+    username: 'info@base.com',
+    password: ''
+}
+module.exports = {
+    webServer,
+    DBserver,
+    bcrypt,
+    cookie,
+    session,
+    email
+}

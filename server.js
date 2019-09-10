@@ -5,6 +5,7 @@ const registration = require('./local_modules/register')
 const loginValidation = require('./local_modules/login')
 
 const sessionManager = require('./local_modules/manageDBSessions')
+const userManager = require('./local_modules/manageDBusers')
 
 
 const uuidv4 = require('uuid/v4')
@@ -144,6 +145,26 @@ app.post('/logout', isAuthenticated, (req, res) => {
     res.redirect('/')
 })
 
+app.post('/resetpass', isNotAuthenticated, (req, res) => {
+    let details = {
+        action: req.body.action,
+        email: req.body.email,
+    }
+    userManager.managePass(details, (response) => {
+    console.log(response)
+    })
+})
+
+app.post('/updatepass', isAuthenticated, (req, res) => {
+    let details = {
+        action: req.body.action,
+        userID: req.session.userID,
+        password: req.body.pass
+    }
+    userManager.managePass(details, (response) => {
+        console.log(response)
+    })
+})
 
 app.get('/base', isAuthenticated, (req, res) => {
     res.send('in /base')

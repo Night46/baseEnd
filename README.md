@@ -13,8 +13,9 @@ Core components are:
 * Postgresql server
 
 Setup<br>
-After clone just run 'npm install' in teh root folder.
+After clone just run 'npm install' in the root folder.
 To setup the Postgres server follow the instructions in the 'SetupGuides' folder.
+For password reset and update to work make sure to setup the user and password for nodemailer in the variabbles file
 
 
 

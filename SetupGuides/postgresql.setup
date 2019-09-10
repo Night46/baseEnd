@@ -26,5 +26,4 @@ grant all privileges on database base_db to baseadmin;
 
 create table users ( id UUID NOT NULL, username CHAR(64), email CHAR(64) NOT NULL UNIQUE, password VARCHAR(64), role CHAR(32), created TIMESTAMP WITHOUT TIME ZONE NOT NULL, CONSTRAINT users_pkey PRIMARY KEY(id) ) WITH (oids = false);
 create table sessions ( id UUID NOT NULL, email CHAR(64) NOT NULL, username CHAR(64), role CHAR(32), userid VARCHAR(64), expiration TIMESTAMP WITHOUT TIME ZONE NOT NULL, created TIMESTAMP WITHOUT TIME ZONE NOT NULL);
-
 \q
