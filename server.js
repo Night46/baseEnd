@@ -18,7 +18,7 @@ const sessionDBStore = require('./local_modules/sessionStore')
 
 const randomString = require('randomstring')
 
-const port = variables.webServer.MIDDLEWARE_PORT
+const port = variables.webServer.HTTP_PORT
 const sessionConfig = {
     store: new sessionDBStore,
     genid: function (req) {
@@ -53,25 +53,26 @@ app.use(session(sessionConfig))
 
 // app.use(express.static(path.join(__dirname, '../client/build')))
 
-// function isAuthenticated(req, res, next) {
-//     sessionManager.readSessionID(req, (sessionsStatus) => {
-//         if (sessionsStatus.result == false || sessionsStatus.result == undefined) {
-//             res.redirect('/')
-//         } else {
-//             next()
-//         }
-//     })
-// }
+function isAuthenticated(req, res, next) {
+    sessionManager.readSessionID(req, (sessionsStatus) => {
+        if (sessionsStatus.result === false || sessionsStatus.result === undefined) {
+            res.redirect('/')
+        } else {
+            next()
+        }
+    })
+}
 
-// function isNotAuthenticated(req, res, next) {
-//     sessionManager.readSessionID(req, (sessionsStatus) => {
-//         if (sessionsStatus.result == false || sessionsStatus.result == undefined) {
-//             next()
-//         } else {
-//             res.redirect('/base')
-//         }
-//     })
-// }
+function isNotAuthenticated(req, res, next) {
+    sessionManager.readSessionID(req, (sessionsStatus) => {
+        if (sessionsStatus.result == false || sessionsStatus.result == undefined) {
+            next()
+        } else {
+            req.session.save()
+            res.redirect('/base')
+        }
+    })
+}
 
 
 
@@ -79,22 +80,24 @@ app.use(session(sessionConfig))
 
 // THIS IS A ROUTE FOR TEST PURPOSES -- DELETE BEORE PRODUCTION
 // ------------------------------------------------------------
-app.get('/tmp', (req, res) => {
-    console.table(req.session)
+app.get('/tmp', isAuthenticated, (req, res) => {
     res.send(`in /tmp ${req.sessionID}`)
 })
 // ------------------------------------------------------------
+
+
+
 
 
 app.get('/', (req, res) => {
     res.send('in main /')
 })
 
-app.get('/register', (req, res) => {
+app.get('/register', isNotAuthenticated, (req, res) => {
     res.send('register')
 })
 
-app.post('/register', (req, res) => {
+app.post('/register', isNotAuthenticated, (req, res) => {
     registration.validateRegistration(req, (result) => {
         if (result.result == 'Email already registered') {
             res.redirect('/login')
@@ -105,18 +108,16 @@ app.post('/register', (req, res) => {
             req.session.email = req.body.email
             req.session.path = req.path
 
-            // req.session.save()
-
             res.redirect('/base')
         }
     })
 })
 
-app.get('/login', (req, res) => {
+app.get('/login', isNotAuthenticated, (req, res) => {
     res.send('login')
 })
 
-app.post('/login', (req, res) => {
+app.post('/login', isNotAuthenticated, (req, res) => {
     loginValidation.checkLogin(req, (result) => {
         if (result.result !== 'loggedin successfuly') {
             // add error message!
@@ -127,23 +128,24 @@ app.post('/login', (req, res) => {
             req.session.role = result.role
             req.session.email = req.body.email
             req.session.path = req.path
-            // req.session.save()
 
-            res.send('logged in')
+            res.redirect('/base')
         }
     })
 })
 
-app.post('/logout', (req, res) => {
+app.post('/logout', isAuthenticated, (req, res) => {
     sessionManager.deleteSessionID({ sessionID: req.sessionID }, (response) => {
     })
 
     res.clearCookie('SID')
-    res.send('logged out')
+    
+    req.session.save()
+    res.redirect('/')
 })
 
 
-app.get('/base', (req, res) => {
+app.get('/base', isAuthenticated, (req, res) => {
     res.send('in /base')
 })
 
