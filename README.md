@@ -22,7 +22,6 @@ For password reset and update to work make sure to setup the user and password f
 TODO
 ---
 * input data type verification
+* input content validation
 * domain validation for registration - domain exists and has MX record
-
-
 

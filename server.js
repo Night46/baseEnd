@@ -19,7 +19,7 @@ const sessionDBStore = require('./local_modules/sessionStore')
 
 const randomString = require('randomstring')
 
-const port = variables.webServer.HTTP_PORT
+const port = variables.webServer.MIDDLEWARE_PORT
 const sessionConfig = {
     store: new sessionDBStore,
     genid: function (req) {
